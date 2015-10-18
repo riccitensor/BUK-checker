@@ -1,0 +1,8 @@
+*.tlog
+
+#Debug
+Debug/ConsoleApplication1.exe
+Debug/ConsoleApplication1.ilk
+Debug/ConsoleApplication1.pdb
+
+Terminator.sdf
