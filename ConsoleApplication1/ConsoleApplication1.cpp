@@ -1,6 +1,3 @@
-// ConsoleApplication6.cpp : Defines the entry point for the console application.
-//
-
 #include "stdafx.h"
 #include "Metody.h"
 #include <windows.h>
@@ -24,6 +21,9 @@ wstring path_firefox = (L"C:\\Program Files(x86)\\Mozilla Firefox"); //plik wyko
 
 int main(int argc, char* argv[])
 {
+	//wczytujemy url do postów z pliku ../Date/forum.txt (po zape³nieniu lub zamknieciu w¹tku nale¿y wpisaæ url do nowego w¹tku w forum
+	load_url();
+
 	SYSTEMTIME ct;
 	GetLocalTime(&ct);
 	int h_start = ct.wHour;
@@ -31,56 +31,53 @@ int main(int argc, char* argv[])
 
 	cout << "----------------------- 1 logowanie -----------------------" << endl;
 	srand(time(NULL)); //randomizacja odstepów czasu pomiêdzy logowaniami
-	for (int i = 0; i>=0; i++) //3 zapetlenia calej procedury dla testow, potem ustawimy by petla sie konczyla o 22.00 i zaczynala od 10.00
+	for (int i = 0; i>=0; i++) 
 	{
 		SYSTEMTIME ct;
 		GetLocalTime(&ct);
 		int h_start = ct.wHour;
 		int m_start = ct.wMinute;
-		if (h_start >= 11 && h_start<22)
+
+		if (h_start >= 12 && h_start<21)  // program bedzie uruchamiany miedzy godzina 12 a 21
 		{
-
-			std::ofstream logs;
-			logs.open("logs.txt", ios::app);
-
 			SYSTEMTIME st;
 			GetLocalTime(&st);
-			logs << "[I]  Log start." << endl;
 
-
-
-
+				std::ofstream logs;
+				logs.open("logs.txt", ios::app);
+				logs << "[I]  Log start." << endl;
 
 
 			try {
+					open(firefox, path_firefox); //otwieramy program, firefox
+					Sleep(6000); //czekamy az siê odpali
+					singleButton(VK_RETURN);  //wciskamy enter, czyli logowanie z wypelnionymi juz danymi na stronie startowej
+					Sleep(6000);  //czekamy az sie strona zaladuje
+					singleButton(VK_F6);  //podswietlamy pasek adresu
+					Sleep(1000);
+				}
 
-				open(firefox, path_firefox); //otwieramy program, firefox
-				Sleep(4000); //czekamy az siê odpali
-				singleButton(VK_RETURN);  //wciskamy enter, czyli logowanie z wypelnionymi juz danymi na stronie startowej
-				Sleep(6000);  //czekamy az sie strona zaladuje
-				singleButton(VK_F6);  //podswietlamy pasek adresu
-				Sleep(1000);
-
-			}
-			catch (int e) {
-				logs << "[-] STAGE 0 OKAY" << endl;
-			}
+			catch (int e) 
+				{
+					logs << "[-] STAGE 0 OKAY" << endl;
+				}
 
 			try {
-				pressCButton('A');
-				pressCButton('X'); //po ctrl + X musi byæ SLEEP !!!!!!!!!!!
-				//skopiowany adres z wwwXX.hatr.... musi zostac przerobiony na wlasciwy link
-				Sleep(2000);
-				link(extractURLData(clipboard())); //laczymy dwa stringi, glowny adres wwwXX.hatt plus adres do wlasciwego miejsca w forum
-				Sleep(1000);
-				pressCButton('V');
-				Sleep(2000);
+					pressCButton('A');
+					pressCButton('X'); //po ctrl + X musi byæ SLEEP !!!!!!!!!!!
+					//skopiowany adres z wwwXX.hatr.... musi zostac przerobiony na wlasciwy link
+					Sleep(3000);
+					link(extractURLData(clipboard())); //laczymy dwa stringi, glowny adres wwwXX.hatt plus adres do wlasciwego miejsca w forum
+					Sleep(1000);
+					pressCButton('V');
+					Sleep(2000);
 
-				singleButton(VK_RETURN);//przechodzimy do tego adresu
-				Sleep(5000);
-				//jestesmy na stronie forum
+					singleButton(VK_RETURN);//przechodzimy do tego adresu
+					Sleep(5000);
+					//jestesmy na stronie forum
+				}
 
-			}
+
 			catch (int e) {
 				logs << "[-] STAGE 1 FAIL" << endl;
 			}
@@ -145,6 +142,9 @@ int main(int argc, char* argv[])
 		else
 		{
 			cout << "Jest godzina " << h_start << ":";
+			cout << "skopiowany z data : "; link(extractURLData(clipboard()));
+			Sleep(5000);
+			pressCButton('V');
 			if (m_start < 10) cout << "0";
 			cout << m_start << ", wstrzymuje autologowanie do godz 11.00" << endl;
 			Sleep(1800000); //co pó³ godziny bêdzie sprawdza³ godzinê systemow¹

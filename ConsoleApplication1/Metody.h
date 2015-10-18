@@ -1,4 +1,3 @@
-#include "stdafx.h"
 
 #include <windows.h>
 #include <stdio.h>
@@ -9,21 +8,36 @@
 //#include <atlstr.h>
 #include <sstream>
 #include <ctime>
+#include <fstream>
+
+
+
 
 
 //#include "WinHTTPClient.h"
 
 using namespace std;
 
+
+
+
+
 string SubUrl_test = "Forum/?actionType=refresh";
 string SubUrl_prev = "Forum/Read.aspx?n=";
 string SubUrl_next = "&t=16839741&v=4";
-string linkToStomil = "Forum/Read.aspx?t=16839741&n=1&v=4&u=96182800"; //zajrzyj to funkcji link, nie chce zczytac ostatniego zera do pamieci
-
+string forum;
 
 string adres_domenowy;
 int liczbapostow;
 
+//wczytywanie URL do forum z pliku
+void load_url()
+{
+	ifstream plik;
+	plik.open("../Data/forum.txt");
+	plik >> forum;
+	plik.close();
+}
 
 boolean open(wstring program, wstring path_program)
 {
@@ -294,7 +308,13 @@ void link(string s)
 {
 	string new_adres;
 
-	new_adres = s + linkToStomil; //JEST OK, wszystko kopiuje siê prawidlowo, rowniez 0 na koncu stringa
+	new_adres = s + forum; //JEST OK, wszystko kopiuje siê prawidlowo, rowniez 0 na koncu stringa
+	OpenClipboard(0);
+	LPVOID WINAPI GlobalLock(
+		_In_ HGLOBAL hMem
+		);
+	BOOL WINAPI EmptyClipboard(void);
+	CloseClipboard();
 	toClipboard(new_adres); //nie chce sie skopiowac 0 ktore jest w zdefiniowanym stringu na koncu w linkToStomil
 
 	
