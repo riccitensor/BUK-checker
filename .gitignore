@@ -5,4 +5,13 @@ Debug/ConsoleApplication1.exe
 Debug/ConsoleApplication1.ilk
 Debug/ConsoleApplication1.pdb
 
+ConsoleApplication1/Debug/ConsoleApplication1.Builds.CppClean.log
+ConsoleApplication1/Debug/ConsoleApplication1.log
+ConsoleApplication1/Debug/ConsoleApplication1.obj
+ConsoleApplication1/Debug/ConsoleApplication1.pch
+ConsoleApplication1/Debug/stdafx.obj
+ConsoleApplication1/Debug/vc120.idb
+ConsoleApplication1/Debug/vc120.pdb
+
 Terminator.sdf
+Terminator.opensdf
